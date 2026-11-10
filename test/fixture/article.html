@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The lost frontier of stretchtext</title>
+    <style>
+      :root {
+        --ink: #1b1726;
+        --muted: #6b647f;
+        --line: #e7e2f3;
+        --brand: #6d4aff;
+        --paper: #fdfcff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+        line-height: 1.68;
+      }
+      .wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 56px 24px 88px;
+      }
+      .kicker {
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        font-size: 12px;
+        font-weight: 650;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--brand);
+        margin: 0 0 14px;
+      }
+      h1 {
+        font-size: 44px;
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+        margin: 0 0 16px;
+        font-weight: 700;
+      }
+      .standfirst {
+        font-size: 19px;
+        line-height: 1.5;
+        color: var(--muted);
+        margin: 0 0 22px;
+        font-style: italic;
+      }
+      .byline {
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        font-size: 13px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        padding: 12px 0;
+        margin-bottom: 30px;
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      article p {
+        margin: 0 0 20px;
+        font-size: 18.5px;
+      }
+      article p:first-of-type::first-letter {
+        float: left;
+        font-size: 62px;
+        line-height: 0.82;
+        padding: 6px 10px 0 0;
+        color: var(--brand);
+        font-weight: 700;
+      }
+      h2 {
+        font-size: 24px;
+        letter-spacing: -0.01em;
+        margin: 38px 0 14px;
+      }
+      .note {
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        font-size: 13.5px;
+        line-height: 1.6;
+        color: var(--muted);
+        background: #f5f1ff;
+        border-left: 3px solid var(--brand);
+        padding: 12px 16px;
+        border-radius: 0 8px 8px 0;
+        margin: 30px 0 0;
+      }
+      footer {
+        margin-top: 46px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="kicker">Tools of Thought</p>
+      <h1>The lost frontier of stretchtext</h1>
+      <p class="standfirst">
+        In 1967 Ted Nelson sketched text that grows where a reader wants more and shrinks back where they don't. It
+        took cheap writing to make the idea usable.
+      </p>
+      <div class="byline">
+        <span>By the StretchText desk</span>
+        <span>6 min read</span>
+      </div>
+
+      <article id="article">
+        <p>
+          Ted Nelson proposed stretchtext in 1967 as a way to keep a document at whatever depth a reader needed. Instead
+          of choosing one length for everyone, the text would offer a short version in place, with the removed material
+          still attached to the phrases it came from. A reader who wanted the full account could pull it back, sentence
+          by sentence, without leaving the paragraph or loading a second page.
+        </p>
+        <p>
+          The idea failed for a practical reason rather than a conceptual one. Every level of detail had to be written
+          and maintained by hand, and a document with three depths of detail is three documents pretending to be one.
+          Authors never had the patience for it, publishers never had the budget, and hypertext systems that supported
+          the feature could not show a return on the work.
+        </p>
+        <p>
+          Generated text changes the arithmetic. A model can compress a passage to a sixth of its length in under a
+          second, and it can produce the missing detail again on demand, at the precise point where a reader asks for
+          it. The author writes once. The reader chooses a depth by clicking, and the depth is not a setting somewhere
+          in a menu but a gesture on the sentence itself.
+        </p>
+        <p>
+          The economics are the interesting part. Compression is not free, but it is small: a few hundred tokens for a
+          long paragraph, billed to whoever asked for it. That makes a different bargain possible, in which the reader
+          pays for their own reading instead of the publisher paying for attention, and the software never has to guess
+          how much detail a page should ship with.
+        </p>
+        <h2>Reading less, on purpose</h2>
+        <p>
+          There is a subtler benefit that only shows up after a few weeks of use. A stretched page tells you what you
+          skipped. When you shrink a section and leave it shrunk, you have made a small, visible decision about what you
+          do not need, and the shape of the page remembers it. Most reading tools hide that decision; they scroll past it
+          at speed, or collapse it into a summary you never reopen.
+        </p>
+        <p class="note">
+          Select any paragraph on this page, press Alt+S, and the extension replaces it with a short version. Dotted
+          phrases grow the detail back where it stands; the small arrow at the end puts the original text back.
+        </p>
+      </article>
+
+      <footer>StretchText test page · served locally for the end-to-end suite.</footer>
+    </div>
+  </body>
+</html>
