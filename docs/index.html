@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StretchText — grow any page</title>
+    <meta
+      name="description"
+      content="A browser extension that turns any web page into stretchtext: a short version in place, dotted phrases grow the detail back where you click."
+    />
+    <style>
+      :root {
+        --bg: #0e0b17;
+        --bg-2: #14101f;
+        --ink: #f3efff;
+        --muted: #a69ec4;
+        --line: #2a2340;
+        --brand: #8b6bff;
+        --brand-2: #c07bff;
+        --paper: #1a1526;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--brand-2);
+      }
+      .wrap {
+        max-width: 940px;
+        margin: 0 auto;
+        padding: 0 22px;
+      }
+
+      header {
+        padding: 26px 0 0;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .nav img {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+      }
+      .nav strong {
+        letter-spacing: -0.01em;
+      }
+      .nav .links {
+        margin-left: auto;
+        display: flex;
+        gap: 18px;
+        font-size: 14px;
+      }
+      .nav .links a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .nav .links a:hover {
+        color: var(--ink);
+      }
+
+      .hero {
+        padding: 58px 0 30px;
+        background: radial-gradient(90% 120% at 50% -20%, rgba(139, 107, 255, 0.28), transparent 62%);
+      }
+      h1 {
+        font-size: clamp(38px, 6vw, 62px);
+        line-height: 1.04;
+        letter-spacing: -0.035em;
+        margin: 0 0 18px;
+        max-width: 16ch;
+      }
+      h1 span {
+        background: linear-gradient(100deg, var(--brand), var(--brand-2) 60%, #ff9ed2);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .lede {
+        font-size: 19px;
+        color: var(--muted);
+        max-width: 56ch;
+        margin: 0 0 26px;
+      }
+      .btns {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        border: 1px solid transparent;
+      }
+      .btn.primary {
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #fff;
+      }
+      .btn.primary:hover {
+        filter: brightness(1.08);
+      }
+      .btn.ghost {
+        border-color: var(--line);
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .btn.ghost:hover {
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .note {
+        margin-top: 18px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .shot {
+        margin: 34px 0 0;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      section {
+        padding: 64px 0;
+        border-top: 1px solid var(--line);
+      }
+      h2 {
+        font-size: 28px;
+        letter-spacing: -0.02em;
+        margin: 0 0 8px;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 26px;
+        max-width: 60ch;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-top: 26px;
+      }
+      .step {
+        border: 1px solid var(--line);
+        background: var(--bg-2);
+        border-radius: 14px;
+        padding: 18px;
+      }
+      .step b {
+        display: inline-grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(139, 107, 255, 0.18);
+        color: var(--brand-2);
+        font: 600 13px/1 ui-monospace, monospace;
+        margin-bottom: 10px;
+      }
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14.5px;
+      }
+      .step h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+
+      /* live demo */
+      .demo {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--paper);
+        padding: 26px 26px 20px;
+      }
+      .demo-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .demo-head .pill {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 3px 10px;
+        color: var(--brand-2);
+        background: rgba(139, 107, 255, 0.1);
+        font-weight: 600;
+      }
+      .demo-head button {
+        margin-left: auto;
+        font: inherit;
+        font-size: 13px;
+        color: var(--muted);
+        background: none;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        padding: 5px 12px;
+        cursor: pointer;
+      }
+      .demo-head button:hover {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .demo article {
+        font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+        font-size: 18px;
+        line-height: 1.62;
+        max-width: 62ch;
+      }
+      .demo p {
+        margin: 0 0 16px;
+      }
+      .st-phrase {
+        cursor: pointer;
+        border-radius: 0.18em;
+        padding: 0 0.08em;
+        background: rgba(139, 107, 255, 0.14);
+        text-decoration: underline dotted rgba(186, 160, 255, 0.95);
+        text-decoration-thickness: 0.09em;
+        text-underline-offset: 0.16em;
+        transition: background-color 120ms ease;
+      }
+      .st-phrase:hover,
+      .st-phrase[aria-expanded="true"] {
+        background: rgba(139, 107, 255, 0.3);
+        text-decoration-style: solid;
+      }
+      .st-detail {
+        background: rgba(139, 107, 255, 0.12);
+        box-shadow: inset 0 -0.05em 0 rgba(139, 107, 255, 0.4);
+        border-radius: 0.18em;
+        padding: 0.04em 0.06em;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+      }
+      .hint {
+        margin-top: 4px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      code {
+        font: 0.9em/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 1px 5px;
+      }
+      pre {
+        background: #0b0913;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px 18px;
+        overflow-x: auto;
+        font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+        color: #d9d2f2;
+      }
+
+      footer {
+        padding: 40px 0 60px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 14px;
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      footer .spacer {
+        flex: 1;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .st-phrase {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="wrap">
+      <div class="nav">
+        <img src="../icons/icon128.png" alt="" />
+        <strong>StretchText</strong>
+        <div class="links">
+          <a href="#demo">Demo</a>
+          <a href="#install">Install</a>
+          <a href="https://github.com/pollinations/pollinations/issues/17998">Quest #17998</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="wrap">
+        <h1>Text that <span>grows</span> where you want more.</h1>
+        <p class="lede">
+          Select a paragraph on any page. StretchText replaces it, in place, with a short version — and the
+          detail you skipped stays attached to the phrases it came from. Click a dotted phrase and it grows
+          back right there. Click again and it shrinks.
+        </p>
+        <div class="btns">
+          <a class="btn primary" href="#install">Install in Chrome</a>
+          <a class="btn ghost" href="https://github.com/pollinations/pollinations/issues/17998">The quest</a>
+        </div>
+        <p class="note">
+          Chromium 110+ · bring your own Pollen · no backend, no tracking, no store listing yet
+        </p>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <figure class="shot">
+        <img src="screenshot.png" alt="A paragraph of an article replaced by a short version, with one dotted phrase grown back inline" />
+      </figure>
+    </div>
+
+    <section id="demo">
+      <div class="wrap">
+        <h2>Try it right here</h2>
+        <p class="sub">
+          This page runs the same interaction on hand-written data, so it works with no key and no network.
+          In the extension the same click asks your model of choice for the sentence that was cut.
+        </p>
+        <div class="demo">
+          <div class="demo-head">
+            <span class="pill">demo</span>
+            <span>click a dotted phrase · then click the detail to shrink it</span>
+            <button id="reset" type="button">Restore original</button>
+          </div>
+          <article id="demo-article"></article>
+          <p class="hint">
+            Reduced to about a sixth of the words. The light text is what the model put back when you asked.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap">
+        <h2>How it works</h2>
+        <p class="sub">One selection, one completion, one more per phrase you open. Nothing is thrown away.</p>
+        <div class="steps">
+          <div class="step">
+            <b>1</b>
+            <h3>Stretch</h3>
+            <p>
+              Select text and press <code>Alt+S</code>. The selection is swapped for a kernel of roughly a
+              sixth of its length; the original nodes are kept aside.
+            </p>
+          </div>
+          <div class="step">
+            <b>2</b>
+            <h3>Grow</h3>
+            <p>
+              The model marks two or three short phrases. A click sends the original passage and the phrase
+              you clicked, and the missing detail streams in after that phrase.
+            </p>
+          </div>
+          <div class="step">
+            <b>3</b>
+            <h3>Shrink</h3>
+            <p>
+              The <code>−</code> collapses the detail, the <code>↺</code> puts the original paragraph back
+              exactly as it was. Every result is cached for the session.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="wrap">
+        <h2>Install</h2>
+        <p class="sub">
+          Unpacked for now. It takes about twenty seconds and works in Chrome, Brave, Edge and Arc.
+        </p>
+        <pre>git clone https://github.com/<your-fork>/stretchtext   # or download the ZIP
+# chrome://extensions → Developer mode → Load unpacked → pick the folder</pre>
+        <p class="sub" style="margin-bottom: 0">
+          Then click the icon once, sign in with Pollinations, and pick a budget. The key lives in this
+          browser session only; page text goes nowhere except the request you asked for.
+        </p>
+      </div>
+    </section>
+
+    <footer class="wrap">
+      <a href="https://pollinations.ai/?ref=badge">Made with pollinations.ai</a>
+      <span>·</span>
+      <a href="https://github.com/pollinations/pollinations/blob/main/BRING_YOUR_OWN_POLLEN.md">BYOP</a>
+      <span class="spacer"></span>
+      <span>MIT</span>
+    </footer>
+
+    <script>
+      // Hand-written kernels + details. The extension asks a model for these;
+      // this page is a deterministic illustration of the interaction.
+      const paragraphs = [
+        {
+          kernel:
+            'Ted Nelson proposed {{stretchtext|1}} in 1967 as text that keeps a document at whatever depth a reader needs, rather than one length for everyone.',
+          details: {
+            1: ', a form of hypertext where any phrase can unfold into the text it stands for and fold shut again,',
+          },
+        },
+        {
+          kernel:
+            'It failed for a practical reason: every level had to be written and kept up {{by hand|1}}, and a document with three depths is three documents pretending to be one.',
+          details: {
+            1: ', paragraph by paragraph, for every edition, in every language,',
+          },
+        },
+        {
+          kernel:
+            'Generated text changes the arithmetic. A model compresses a passage in under a second and reproduces the {{missing detail|1}} where the reader asks for it, so the author writes once.',
+          details: {
+            1: ', the exact sentences that were dropped, not a vague summary of them,',
+          },
+        },
+      ];
+
+      const article = document.getElementById('demo-article');
+
+      function buildParagraph(spec) {
+        const p = document.createElement('p');
+        const pattern = /\{\{(.*?)\|(\d+)\}\}/g;
+        let last = 0;
+        let match;
+        while ((match = pattern.exec(spec.kernel))) {
+          if (match.index > last) p.append(document.createTextNode(spec.kernel.slice(last, match.index)));
+          const phrase = document.createElement('span');
+          phrase.className = 'st-phrase';
+          phrase.tabIndex = 0;
+          phrase.setAttribute('role', 'button');
+          phrase.setAttribute('aria-expanded', 'false');
+          phrase.textContent = match[1];
+          phrase.dataset.detail = spec.details[match[2]] || '';
+          phrase.addEventListener('click', () => toggle(phrase));
+          phrase.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              toggle(phrase);
+            }
+          });
+          p.append(phrase);
+          last = match.index + match[0].length;
+        }
+        if (last < spec.kernel.length) p.append(document.createTextNode(spec.kernel.slice(last)));
+        return p;
+      }
+
+      function toggle(phrase) {
+        const next = phrase.nextElementSibling;
+        if (next && next.classList.contains('st-detail')) {
+          next.remove();
+          phrase.setAttribute('aria-expanded', 'false');
+          return;
+        }
+        const detail = document.createElement('span');
+        detail.className = 'st-detail';
+        detail.textContent = phrase.dataset.detail;
+        detail.title = 'Click to shrink';
+        detail.addEventListener('click', () => toggle(phrase));
+        phrase.after(detail);
+        phrase.setAttribute('aria-expanded', 'true');
+      }
+
+      function render() {
+        article.replaceChildren(...paragraphs.map(buildParagraph));
+      }
+
+      document.getElementById('reset').addEventListener('click', render);
+      render();
+    </script>
+  </body>
+</html>
