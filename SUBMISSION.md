@@ -1,4 +1,4 @@
-# App submission — ready-to-paste form values
+﻿# App submission — ready-to-paste form values
 
 Quest: **#17998** — [A browser extension that turns any web page into stretchtext](https://github.com/pollinations/pollinations/issues/17998)
 
@@ -8,8 +8,8 @@ Open <https://github.com/pollinations/pollinations/issues/new?template=app-submi
 | --- | --- |
 | **App Name** | StretchText |
 | **App Description** | Select any text on any page and stretch it: a short version appears in place, and dotted phrases grow the cut detail back where you click. Readers sign in with their own Pollen. |
-| **App URL** | `https://<account>.github.io/stretchtext/docs/` (GitHub Pages, `main` / root) |
-| **GitHub Repository URL** | `https://github.com/<account>/stretchtext` |
+| **App URL** | https://vilanchik654.github.io/stretchtext/docs/ |
+| **GitHub Repository URL** | https://github.com/vilanchik654/stretchtext |
 | **Screenshot** | `docs/screenshot.png` (1600×900) |
 | **App Category** | `writing` |
 | **Platform** | `browser-ext` |
@@ -20,7 +20,7 @@ The description above is 197 characters, under the 200 limit.
 
 ## What to say in the quest thread
 
-> Submitted **StretchText** for quest #17998 — submission #<number>, install page <App URL>, source <repo>.
+> Submitted **StretchText** for quest #17998 — install page https://vilanchik654.github.io/stretchtext/docs/, source https://github.com/vilanchik654/stretchtext.
 >
 > Manifest V3 for Chrome / Brave / Edge. Select a paragraph, press `Alt+S`: it is replaced in place by a
 > kernel of about a sixth of its length, with two or three dotted phrases. Clicking one streams the
@@ -46,3 +46,4 @@ Claim the reward at <https://enter.pollinations.ai/quests>.
   without it the device flow still works and the reader still pays.
 - The repo has no build step: `manifest.json` + `src/` is the extension.
 - Screenshot was produced by `test/e2e.mjs` from the real extension UI, not a mockup.
+
