@@ -253,6 +253,12 @@ async function main() {
   console.log('\n• connecting a reader key (no UI needed for the rest)');
   await cdp.send('Page.navigate', { url: 'chrome-extension://' + extId + '/src/popup.html' });
   await waitFor('popup ready', () => evaluate("Boolean(document.getElementById('mode'))"), 15000);
+  const guestMode = await waitFor(
+    'popup status',
+    () => evaluate("document.getElementById('mode').textContent !== 'Checking…' ? document.getElementById('mode').textContent : null"),
+    10000
+  );
+  check('popup asks for a connection before any key is set', /Not connected/.test(guestMode), JSON.stringify(guestMode));
   const seeded = await evaluate(`(async () => {
     await chrome.storage.sync.set({ apiBase: ${JSON.stringify(mock.url)}, model: 'openai/gpt-5.4-nano', ratio: 16, language: 'auto' });
     await chrome.storage.session.set({ auth: { token: 'sk_test_reader_key', mode: 'key', expiresAt: Date.now() + 3600000 } });

@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 const $ = (id) => document.getElementById(id);
 const send = (msg) =>
@@ -48,7 +48,7 @@ function render() {
     ? mode === 'key'
       ? 'Signed in with an API key'
       : 'Signed in with Pollinations'
-    : 'Free tier — no sign-in needed';
+    : 'Not connected — sign in to spend your Pollen';
 
   $('pollen-dot').className = 'dot ' + (signedIn ? 'on' : 'warn');
 
@@ -58,7 +58,7 @@ function render() {
     $('signed-in').hidden = false;
     $('key-line').textContent = maskedKey + (expiresAt ? ' · ' + relative(expiresAt) : ' · no expiry');
   } else {
-    $('pollen-text').textContent = 'Free tier — no Pollen is spent, answers arrive in one piece.';
+    $('pollen-text').textContent = 'StretchText bills your own Pollen. Connect once — your password never leaves Pollinations.';
     $('guest-actions').hidden = false;
     $('signed-in').hidden = true;
   }
@@ -167,7 +167,7 @@ $('signout').addEventListener('click', async () => {
   if (res && res.ok) {
     status = res.data;
     render();
-    note('Signed out. Back to the free tier.', 'ok');
+    note('Signed out. Your key is gone from this browser.', 'ok');
   }
 });
 
@@ -189,3 +189,4 @@ $('appkey').addEventListener('input', (e) => {
 
 refresh();
 setInterval(refresh, 2000);
+
