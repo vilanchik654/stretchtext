@@ -1,4 +1,4 @@
-# StretchText — grow any page
+﻿# StretchText — grow any page
 
 [![Made with pollinations.ai](https://raw.githubusercontent.com/pollinations/pollinations/main/packages/ui/src/brand/badge-made-with.svg)](https://pollinations.ai/?ref=badge)
 
@@ -36,7 +36,7 @@ The kernel streams in token by token. Markers are parsed out of the partial stre
 Chrome, Brave, Edge — any Chromium 110+.
 
 ```bash
-git clone https://github.com/<you>/stretchtext
+git clone https://github.com/vilanchik654/stretchtext
 ```
 
 1. Open `chrome://extensions` and enable **Developer mode**.
@@ -142,3 +142,4 @@ and needs no account. Production requests go to `gen.pollinations.ai` unchanged.
 ## License
 
 MIT.
+
