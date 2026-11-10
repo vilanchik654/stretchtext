@@ -1,0 +1,13 @@
+{
+  "name": "stretchtext",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser extension that turns any web page into stretchtext: a short version appears in place, and dotted phrases grow the detail back where you click.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test test/",
+    "e2e": "node test/e2e.mjs",
+    "icons": "node tools/make-icons.mjs",
+    "zip": "node tools/zip.mjs"
+  }
+}

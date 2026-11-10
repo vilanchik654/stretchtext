@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Connect Pollinations — StretchText</title>
+    <style>
+      :root {
+        --bg: #0f0c1a;
+        --card: #171226;
+        --ink: #f3efff;
+        --muted: #a79fc4;
+        --line: #2a2242;
+        --brand: #8b6bff;
+        --brand-2: #b478ff;
+        --ok: #4ad991;
+        --err: #ff7a7a;
+        color-scheme: dark;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f5ff;
+          --card: #ffffff;
+          --ink: #1a1530;
+          --muted: #6a6483;
+          --line: #e7e1f7;
+          --brand: #6d4aff;
+          --brand-2: #9e5cff;
+          --ok: #1f9d63;
+          --err: #c22f2f;
+          color-scheme: light;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--brand) 16%, var(--bg)), var(--bg));
+        color: var(--ink);
+        font: 14px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        padding: 24px;
+      }
+      .card {
+        width: min(520px, 100%);
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 26px 26px 22px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .brand img {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+      }
+      .brand span {
+        font-weight: 650;
+        letter-spacing: -0.01em;
+      }
+      h1 {
+        font-size: 20px;
+        line-height: 1.25;
+        margin: 0 0 6px;
+        letter-spacing: -0.02em;
+      }
+      p {
+        margin: 0;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .steps {
+        margin: 20px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 14px;
+      }
+      .step {
+        display: grid;
+        grid-template-columns: 26px 1fr;
+        gap: 12px;
+        align-items: start;
+      }
+      .num {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font: 600 12px/1 ui-monospace, monospace;
+        background: color-mix(in srgb, var(--brand) 18%, transparent);
+        color: var(--brand);
+      }
+      code.big {
+        display: block;
+        font: 650 26px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0.16em;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px dashed var(--line);
+        background: color-mix(in srgb, var(--brand) 8%, transparent);
+        margin: 8px 0;
+        user-select: all;
+      }
+      button {
+        font: inherit;
+        border: 0;
+        cursor: pointer;
+        border-radius: 10px;
+        color: inherit;
+      }
+      button:focus-visible {
+        outline: 2px solid var(--brand);
+        outline-offset: 2px;
+      }
+      .primary {
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #fff;
+        font-weight: 600;
+        padding: 11px 16px;
+      }
+      .primary:hover {
+        filter: brightness(1.07);
+      }
+      .link {
+        background: none;
+        padding: 2px 0;
+        color: var(--brand);
+        font-size: 13px;
+        text-decoration: underline;
+      }
+      .status {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--muted);
+        min-height: 22px;
+      }
+      .spinner {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: 2px solid color-mix(in srgb, var(--brand) 30%, transparent);
+        border-top-color: var(--brand);
+        animation: spin 0.8s linear infinite;
+        flex: none;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .ok {
+        color: var(--ok);
+      }
+      .err {
+        color: var(--err);
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .foot {
+        margin-top: 22px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      a {
+        color: var(--muted);
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .done {
+        display: grid;
+        place-items: center;
+        gap: 10px;
+        text-align: center;
+        padding: 22px 0 6px;
+      }
+      .tick {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: color-mix(in srgb, var(--ok) 18%, transparent);
+        color: var(--ok);
+        font-size: 26px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="brand">
+        <img src="../icons/icon48.png" alt="" />
+        <span>StretchText</span>
+      </div>
+
+      <div id="panel-connect">
+        <h1>Let StretchText spend your Pollen</h1>
+        <p class="muted">
+          One approval on Pollinations and this browser gets its own key. Your password never touches the extension, and
+          every stretch is billed to you — not to the app.
+        </p>
+
+        <ol class="steps">
+          <li class="step">
+            <span class="num">1</span>
+            <div>
+              <p>Open this page and check the code matches:</p>
+              <code class="big" id="code">····-····</code>
+              <button class="link" id="copy" type="button">Copy code</button>
+            </div>
+          </li>
+          <li class="step">
+            <span class="num">2</span>
+            <div>
+              <p class="muted">Choose how much Pollen StretchText may spend, then approve.</p>
+              <div class="row" style="margin-top: 10px">
+                <button class="primary" id="approve" type="button">Open Pollinations</button>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <div class="status" id="status"><span class="spinner"></span><span id="status-text">Requesting a code…</span></div>
+      </div>
+
+      <div id="panel-done" class="done" hidden>
+        <div class="tick">✓</div>
+        <h1 style="margin: 0">Connected</h1>
+        <p class="muted" id="done-text">StretchText will now spend your own Pollen. You can close this tab.</p>
+      </div>
+
+      <div class="foot">
+        <span>Device flow · no password, no backend.</span>
+        <a href="https://github.com/pollinations/pollinations/blob/main/BRING_YOUR_OWN_POLLEN.md" target="_blank" rel="noreferrer">How it works</a>
+      </div>
+    </main>
+    <script src="auth.js"></script>
+  </body>
+</html>

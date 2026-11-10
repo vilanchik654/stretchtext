@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StretchText</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="head">
+      <img class="logo" src="../icons/icon48.png" alt="" width="26" height="26" />
+      <div class="titles">
+        <h1>StretchText</h1>
+        <p id="mode" class="mode">Checking…</p>
+      </div>
+      <button id="settings-toggle" class="ghost icon" type="button" title="Settings" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            d="M4 7h10M18 7h2M4 17h4M12 17h8M4 12h16"
+          />
+          <circle cx="16" cy="7" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+          <circle cx="10" cy="17" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+          <circle cx="10" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+        </svg>
+      </button>
+    </header>
+
+    <section class="hero">
+      <p class="lede">Select text on any page, then stretch it into a short version that grows back where you click.</p>
+      <div class="actions">
+        <button id="stretch" class="primary" type="button">Stretch selection</button>
+        <button id="restore" class="secondary" type="button">Restore</button>
+      </div>
+      <p class="keys"><kbd>Alt</kbd>+<kbd>S</kbd> stretch · <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> restore</p>
+    </section>
+
+    <section class="card" id="pollen">
+      <div class="card-head">
+        <span class="dot" id="pollen-dot"></span>
+        <h2>Pollen</h2>
+      </div>
+      <p id="pollen-text" class="muted">Free tier — no Pollen is spent.</p>
+
+      <div id="guest-actions" class="stack">
+        <button id="signin" class="primary wide" type="button">Sign in with Pollinations</button>
+        <button id="show-key" class="link" type="button">Use an API key instead</button>
+      </div>
+
+      <div id="key-panel" class="stack" hidden>
+        <label class="field">
+          <span>API key</span>
+          <input id="key" type="password" autocomplete="off" spellcheck="false" placeholder="sk_…" />
+        </label>
+        <div class="row">
+          <button id="save-key" class="primary" type="button">Save key</button>
+          <button id="cancel-key" class="secondary" type="button">Cancel</button>
+        </div>
+        <p class="hint">Kept in this browser session only. Never sent anywhere except gen.pollinations.ai.</p>
+      </div>
+
+      <div id="signed-in" class="stack" hidden>
+        <p id="key-line" class="mono"></p>
+        <button id="signout" class="link" type="button">Sign out</button>
+      </div>
+    </section>
+
+    <section id="settings" class="card" hidden>
+      <div class="card-head">
+        <h2>Settings</h2>
+      </div>
+      <label class="field">
+        <span>Model</span>
+        <select id="model">
+          <option value="openai/gpt-5.4-nano">GPT-5.4 Nano — fast, cheap</option>
+          <option value="openai/gpt-5-nano">GPT-5 Nano — cheapest</option>
+          <option value="openai/gpt-oss-20b">GPT-OSS 20B</option>
+          <option value="deepseek/deepseek-v4.1-flash">DeepSeek V4.1 Flash</option>
+          <option value="z-ai/glm-5.3-flash">GLM-5.3 Flash</option>
+          <option value="nvidia/nemotron-3.5-lightning">Nemotron 3.5 Lightning</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Short version length <output id="ratio-out">1/6</output></span>
+        <input id="ratio" type="range" min="8" max="45" step="1" />
+      </label>
+      <label class="field">
+        <span>Language</span>
+        <select id="language">
+          <option value="auto">Same as the page</option>
+          <option value="English">English</option>
+          <option value="Russian">Russian</option>
+          <option value="Spanish">Spanish</option>
+          <option value="French">French</option>
+          <option value="German">German</option>
+          <option value="Portuguese">Portuguese</option>
+          <option value="Chinese">Chinese</option>
+          <option value="Japanese">Japanese</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Optional app key <span class="muted">(pk_…, for attribution)</span></span>
+        <input id="appkey" type="text" autocomplete="off" spellcheck="false" placeholder="leave empty" />
+      </label>
+    </section>
+
+    <p id="note" class="note" hidden></p>
+
+    <footer class="foot">
+      <a id="repo" href="https://github.com/pollinations/pollinations/issues/17998" target="_blank" rel="noreferrer">Quest #17998</a>
+      <span class="sep">·</span>
+      <a href="https://gen.pollinations.ai/docs" target="_blank" rel="noreferrer">API docs</a>
+      <span class="sep">·</span>
+      <span id="version" class="muted">v1.0.0</span>
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

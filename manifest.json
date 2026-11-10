@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "StretchText — grow any page",
+  "short_name": "StretchText",
+  "version": "1.0.0",
+  "description": "Select text on any page and stretch it: a short version appears in place, and dotted phrases grow the detail back where you click.",
+  "minimum_chrome_version": "110",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "StretchText",
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "permissions": ["storage", "contextMenus", "scripting", "activeTab"],
+  "host_permissions": [
+    "https://gen.pollinations.ai/*",
+    "https://enter.pollinations.ai/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["src/core.js", "src/content.js"],
+      "css": ["src/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "commands": {
+    "stretch-selection": {
+      "suggested_key": { "default": "Alt+S" },
+      "description": "Stretch the selected text"
+    },
+    "restore-page": {
+      "suggested_key": { "default": "Alt+Shift+S" },
+      "description": "Restore the original text on this page"
+    }
+  }
+}
